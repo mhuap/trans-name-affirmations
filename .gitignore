@@ -18,6 +18,10 @@
 # misc
 .DS_Store
 *.pem
+/public/sw.js
+/public/sw.js.map
+/public/workbox-9a8b0a38.js
+/public/workbox-9a8b0a38.js.map
 
 # debug
 npm-debug.log*
