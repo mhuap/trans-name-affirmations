@@ -10,7 +10,6 @@ export default function Home() {
   const handleSubmit = (e) => {
       e.preventDefault();
 
-      console.log(nameInput.current.value)
       setName(nameInput.current.value)
   }
 
@@ -31,7 +30,7 @@ export default function Home() {
       <main className="container mx-auto mt-24">
         <form onSubmit={handleSubmit} className="mb-4 max-w-xs">
           <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            for="name"
+            htmlFor="name"
           >
             Enter your name
           </label>
