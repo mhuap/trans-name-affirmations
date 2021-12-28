@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 // import { getAnalytics } from "firebase/analytics";
-import localforage from 'localforage';
+// import localforage from 'localforage';
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
 
 const clientCredentials = {
@@ -50,6 +50,7 @@ const getToken2 = async (setTokenFound) => {
   try {
     currentToken = await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY });
     if (currentToken) {
+      console.log('current token for client ', currentToken);
       setTokenFound(true);
     } else {
       setTokenFound(false);
@@ -66,6 +67,7 @@ const onMessageListener = () =>
     onMessage(messaging, (payload) => {
       resolve(payload);
     });
-})
+});
+
 
 export { getToken2, onMessageListener };

@@ -1,32 +1,28 @@
 import { useRef, useState, useEffect } from "react";
-import { getToken2, onMessageListener } from '../firebase/webPush.js';
+import { getToken2, onMessageListener, send } from '../firebase/webPush.js';
 import IndexHead from '../components/indexHead.js'
 // import styles from '../styles/Home.module.css'
 
-export default function Home() {
+const Home = () => {
   const [name, setName] = useState(null)
   const nameInput = useRef(null);
 
   const [isTokenFound, setTokenFound] = useState(false);
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState(true);
+  const [sendNoti, setSendNoti] = useState(() => null)
 
   useEffect(() => {
     // firebaseCloudMessaging.init(setTokenFound)
     getToken2(setTokenFound)
-  }, [])
-
-  onMessageListener()
-    .then((payload) => {
+    onMessageListener().then(payload => {
+      console.log("PAYLOAD");
       setShow(true);
-      setNotification({
-        title: payload.notification.title,
-        body: payload.notification.body,
-      });
+      setNotification({title: payload.notification.title, body: payload.notification.body})
       console.log(payload);
-    })
-    .catch((err) => console.log("failed: ", err));
-
+    }).catch(err => console.log('failed: ', err));
+    setSendNoti(send);
+  }, []);
 
   const handleSubmit = (e) => {
       e.preventDefault();
@@ -68,8 +64,19 @@ export default function Home() {
 
         {isTokenFound && <h1> Notification permission enabled 👍🏻 </h1>}
         {!isTokenFound && <h1> Need notification permission ❗️ </h1>}
+
+        {show && <>
+          <h1>{notification.title}</h1>
+          <p>{notification.body}</p>
+          </>}
+
+        <button onClick={sendNoti}></button>
       </main>
+
+
 
     </div>
   )
 }
+
+export default Home;
