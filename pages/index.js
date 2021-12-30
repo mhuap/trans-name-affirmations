@@ -69,6 +69,8 @@ const Home = () => {
           {name && message}
         </p>
 
+        <p>30s version</p>
+
         {isTokenFound && <h1> Notification permission enabled 👍🏻 </h1>}
         {!isTokenFound && <h1> Need notification permission ❗️ </h1>}
 
