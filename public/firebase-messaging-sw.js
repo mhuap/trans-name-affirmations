@@ -4,6 +4,8 @@ importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-app.js");
 // eslint-disable-next-line no-undef
 importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js");
 
+
+console.log("FIREBASE config");
 // Initialize the Firebase app in the service worker by passing the generated config
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
@@ -17,7 +19,7 @@ const firebaseConfig = {
 
 // eslint-disable-next-line no-undef
 firebase.initializeApp(firebaseConfig);
-
+console.log("initialized");
 // Retrieve firebase messaging
 // eslint-disable-next-line no-undef
 const messaging = firebase.messaging();
@@ -28,7 +30,7 @@ messaging.onBackgroundMessage(function (payload) {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: "/logo192.png",
+    icon: "/icons/icon-256x256.png",
   };
 
   // eslint-disable-next-line no-restricted-globals
