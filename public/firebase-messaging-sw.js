@@ -7,14 +7,23 @@ importScripts("https://www.gstatic.com/firebasejs/8.2.0/firebase-messaging.js");
 
 console.log("FIREBASE config");
 // Initialize the Firebase app in the service worker by passing the generated config
+// const firebaseConfig = {
+//   apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+//   authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+//   projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+//   storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+//   messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+//   appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
+//   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+// };
 const firebaseConfig = {
-  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
-  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
-  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
-  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
-  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
-  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID,
-  measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
+  apiKey: "AIzaSyDuglzUVxGekBmYF_EF2tajpMIPylOKUBw",
+  authDomain: "trans-name-affirmations.firebaseapp.com",
+  projectId: "trans-name-affirmations",
+  storageBucket: "trans-name-affirmations.appspot.com",
+  messagingSenderId: "151056753007",
+  appId: "1:151056753007:web:8266a48732378d704f489a",
+  measurementId: "G-WJRWZQ0GBG",
 };
 
 // eslint-disable-next-line no-undef
