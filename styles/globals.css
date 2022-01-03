@@ -6,6 +6,7 @@ html,
 body {
   padding: 8px;
   margin: 0;
+  background-color: #F5F7FB;
 }
 
 a {
@@ -15,4 +16,8 @@ a {
 
 * {
   box-sizing: border-box;
+}
+
+.pink-drop-shadow-xl:hover {
+  filter: drop-shadow(0 0 10px rgba(249, 168, 212, 0.5));
 }

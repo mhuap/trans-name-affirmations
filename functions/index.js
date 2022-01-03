@@ -3,8 +3,9 @@ const admin = require("firebase-admin");
 const { CloudTasksClient } = require('@google-cloud/tasks');
 const express = require('express');
 const cors = require('cors');
-
 // const path = require('path');
+
+const aff = require('./affirmations.js');
 
 // const serviceAccount = require("./trans-name-affirmations-firebase-adminsdk-zn"+
 // "haw-250b55374a.json");
@@ -44,6 +45,7 @@ app.post('/onEnterName', async (req, res) => {
   const payload = {
     name: req.body.name,
     registrationToken: req.body.registrationToken,
+    url: req.body.url,
   }
 
   const task = {
@@ -67,22 +69,29 @@ app.post('/onEnterName', async (req, res) => {
     res.status(200).json({message: "sending in 30s"});
     res.end();
   } catch (error) {
-    // Construct error for Stackdriver Error Reporting
     console.error(Error(error.message));
-    res.status(500).json(e);
+    res.status(500).json(error);
     res.end();
   }
 
 });
 
 app.post('/sendNotification', async (req, res) => {
-  const msgBody =  req.body.name +  " says hello"
+  const idx = Math.floor((Math.random() * aff.getLength));
+  console.log("idx", idx)
+  const a = aff.getArray[idx];
+  const msgBody =  "Hey " + req.body.name +  ", " + a;
   const message = {
     notification: {
-      title: "Test message",
+      title: "Daily affirmation",
       body: msgBody
     },
-    token: req.body.registrationToken
+    token: req.body.registrationToken,
+    webpush: {
+      fcm_options: {
+        link: req.body.url
+      }
+    }
   };
 
   return new Promise((resolve, reject) => {
@@ -91,7 +100,10 @@ app.post('/sendNotification', async (req, res) => {
      .send(message) // set of operations
      .then((response) => {
        console.log('Successfully sent message:', response);
-       res.status(200).json({message: "sent!"})
+       res.status(200).json({
+         sent: true,
+         message: message,
+       })
        res.end();
        resolve();
      })

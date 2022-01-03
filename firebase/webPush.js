@@ -13,25 +13,40 @@ const clientCredentials = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID,
 };
 
+const app = initializeApp(clientCredentials);
+// const analytics = getAnalytics(app);
+const messaging = getMessaging(app);
+
 const firebaseCloudMessaging = {
   tokenInlocalforage: async () => {
     return localforage.getItem('fcm_token')
   },
 
-  init: async function (setTokenFound, setRegToken) {
+  nameInlocalforage: async () => {
+    return localforage.getItem('name')
+  },
+
+  init: async function (setTokenFound, setRegToken, setName) {
 
     try {
-      const currentToken = await this.tokenInlocalforage()
+      const currentToken = await this.tokenInlocalforage();
       if (currentToken !== null) {
         console.log('current token for client ', currentToken);
         setTokenFound(true);
         setRegToken(currentToken)
+        const currentName = await this.nameInlocalforage();
+        if (currentName !== null) {
+          // not first time
+          setName(currentName)
+        }
         return false
       }
 
       await Notification.requestPermission()
       const token = await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY })
 
+      setTokenFound(true);
+      setRegToken(token);
       localforage.setItem('fcm_token', token)
       console.log('fcm_token', token)
     } catch (error) {
@@ -39,11 +54,12 @@ const firebaseCloudMessaging = {
       console.error(error)
     }
   },
-}
 
-const app = initializeApp(clientCredentials);
-// const analytics = getAnalytics(app);
-const messaging = getMessaging(app);
+  storeName: async (name) => {
+    localforage.setItem('name', name)
+    console.log('name', name)
+  }
+}
 
 const onMessageListener = () =>
   new Promise((resolve) => {

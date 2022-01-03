@@ -1,6 +1,7 @@
 import { useRef, useState, useEffect } from "react";
-import { firebaseCloudMessaging, onMessageListener, send } from '../firebase/webPush.js';
-import IndexHead from '../components/indexHead.js'
+import { firebaseCloudMessaging, onMessageListener } from '../firebase/webPush.js';
+import IndexHead from '../components/indexHead.js';
+import NotificationToast from '../components/notificationToast.js';
 const axios = require('axios');
 // import styles from '../styles/Home.module.css'
 
@@ -12,11 +13,9 @@ const Home = () => {
   const [regToken, setRegToken] = useState(null);
   const [show, setShow] = useState(false);
   const [notification, setNotification] = useState(true);
-  const [sendNoti, setSendNoti] = useState(() => null)
 
   useEffect(() => {
-    firebaseCloudMessaging.init(setTokenFound, setRegToken)
-    setSendNoti(send);
+    firebaseCloudMessaging.init(setTokenFound, setRegToken, setName)
   }, []);
 
   useEffect(() => {
@@ -31,17 +30,19 @@ const Home = () => {
   const handleSubmit = (e) => {
       e.preventDefault();
 
-      setName(nameInput.current.value)
+      setName(nameInput.current.value);
+      firebaseCloudMessaging.storeName(nameInput.current.value);
       axios.post('https://us-central1-trans-name-affirmations.cloudfunctions.net/notificationHandler/onEnterName', {
         registrationToken: regToken,
-        name: nameInput.current.value
+        name: nameInput.current.value,
+        url: window.location.href
       })
       .then(response => console.log(response))
       .catch(error => console.error(error))
   }
 
   const message = <>
-    You will now receive daily affirmations with the name
+    You will receive daily affirmations with the name
     <span className="font-bold">{' ' + name}</span>
     .
     </>
@@ -50,36 +51,37 @@ const Home = () => {
     <div>
       <IndexHead />
 
+
+
       <main className="container mx-auto mt-24">
-        <form onSubmit={handleSubmit} className="mb-4 max-w-xs">
-          <label className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
-            htmlFor="name"
-          >
-            Enter your name
-          </label>
-          <input
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-            id="name"
-            type="text"
-            ref={nameInput}
-          />
-        </form>
-
-        <p className="text-gray-700 mb-4">
-          {name && message}
-        </p>
-
-        <p>30s version</p>
-
         {isTokenFound && <h1> Notification permission enabled 👍🏻 </h1>}
         {!isTokenFound && <h1> Need notification permission ❗️ </h1>}
 
-        {show && <>
-          <h1>{notification.title}</h1>
-          <p>{notification.body}</p>
-          </>}
+        <div className="bg-white my-4 max-w-xs p-8 rounded-3xl">
+          <p className="text-gray-700 mb-4">
+            {name && message}
+          </p>
+          <form onSubmit={handleSubmit}>
+            <label className="block uppercase text-xs tracking-wide text-gray-700 font-bold mb-2"
+              htmlFor="name"
+            >
+              {name ? 'Change' : 'Enter'} your name
+            </label>
+            <input
+              className="appearance-none border rounded-xl w-full py-4 px-4 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              id="name"
+              type="text"
+              ref={nameInput}
+              required
+            />
+            <button type="submit" className="bg-pink-300 py-4 w-full rounded-full mt-4 text-white uppercase font-bold tracking-wider pink-drop-shadow-xl">
+              Submit
+            </button>
+          </form>
+        </div>
 
-        <button onClick={sendNoti}></button>
+        {show && <NotificationToast title={notification.title} body={notification.body}/>}
+
       </main>
 
 
