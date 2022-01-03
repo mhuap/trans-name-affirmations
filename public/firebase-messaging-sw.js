@@ -31,18 +31,26 @@ console.log("initialized");
 // eslint-disable-next-line no-undef
 const messaging = firebase.messaging();
 
-messaging.onBackgroundMessage(function (payload) {
-  console.log("Received background message ", payload);
-
-  const notificationTitle = payload.notification.title;
-  const notificationOptions = {
-    body: payload.notification.body,
-    icon: "/icons/icon-256x256.png",
-  };
-
-  // eslint-disable-next-line no-restricted-globals
-  // return self.registration.showNotification(
-  //   notificationTitle,
-  //   notificationOptions
-  // );
-});
+// messaging.onBackgroundMessage(function (payload) {
+//   console.log("Received background message ", payload);
+//
+//   return self.clients.matchAll().then(all => all.forEach(client => {
+//     client.postMessage("BACKGROUND PAYLOAD");
+//    }));
+//
+//   // const notificationTitle = payload.notification.title;
+//   // const notificationOptions = {
+//   //   body: payload.notification.body,
+//   //   icon: "/icons/icon-256x256.png",
+//   // };
+//   // eslint-disable-next-line no-restricted-globals
+//   // return self.registration.showNotification(
+//   //   notificationTitle,
+//   //   notificationOptions
+//   // );
+// });
+//
+// self.addEventListener("notificationClick", (e) => {
+//   e.notification.close();
+//   console.log(self.registration.scope);
+// })

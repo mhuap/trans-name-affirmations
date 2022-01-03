@@ -16,20 +16,27 @@ const Home = () => {
 
   useEffect(() => {
     firebaseCloudMessaging.init(setTokenFound, setRegToken, setName)
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.addEventListener('message', event => {
+        console.log("setting notification");
+        const payload = event.data;
+        setShow(true);
+        setNotification({title: payload.notification.title, body: payload.notification.body})
+      });
+    }
   }, []);
 
   useEffect(() => {
     onMessageListener().then(payload => {
-      console.log("PAYLOAD");
       setShow(true);
       setNotification({title: payload.notification.title, body: payload.notification.body})
-      console.log(payload);
     }).catch(err => console.log('failed: ', err));
   }, [name])
 
   const handleSubmit = (e) => {
       e.preventDefault();
 
+      setShow(false);
       setName(nameInput.current.value);
       firebaseCloudMessaging.storeName(nameInput.current.value);
       axios.post('https://us-central1-trans-name-affirmations.cloudfunctions.net/notificationHandler/onEnterName', {
@@ -54,7 +61,6 @@ const Home = () => {
 
 
       <main className="container mx-auto mt-24">
-        {isTokenFound && <h1> Notification permission enabled 👍🏻 </h1>}
         {!isTokenFound && <h1> Need notification permission ❗️ </h1>}
 
         <div className="bg-white my-4 max-w-xs p-8 rounded-3xl">

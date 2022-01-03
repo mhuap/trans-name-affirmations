@@ -84,7 +84,7 @@ app.post('/sendNotification', async (req, res) => {
   const message = {
     notification: {
       title: "Daily affirmation",
-      body: msgBody
+      body: msgBody,
     },
     token: req.body.registrationToken,
     webpush: {
