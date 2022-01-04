@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { FiChevronLeft } from "react-icons/fi";
 import { AiFillEdit } from "react-icons/ai"
 import { firebaseCloudMessaging } from '../firebase/webPush.js';
+import Link from 'next/link';
 
 export default function Settings() {
   const [name, setName] = useState('');
@@ -19,11 +20,11 @@ export default function Settings() {
   }, []);
 
   return (<main className="max-w-xs text-gray-700">
-    <a className="w-16 h-16 bg-white rounded-full mb-4 flex justify-center items-center text-3xl white-drop-shadow-xl"
-      type="button"
-      href="/">
-      <FiChevronLeft />
-    </a>
+    <Link href="/">
+      <a className="w-16 h-16 bg-white rounded-full mb-4 flex justify-center items-center text-3xl white-drop-shadow-xl">
+        <FiChevronLeft />
+      </a>
+    </Link>
     <div className="flex items-center bg-white mb-4 p-8 rounded-3xl">
       <div className="grow">
         <span className="mr-4 uppercase text-xs tracking-wide font-bold">Name</span>

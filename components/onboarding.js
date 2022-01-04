@@ -41,7 +41,7 @@ export default function Onboarding({ stage, name, setNameOnboarding, handleSubmi
   const finishOnboarding = <>
   <div className="bg-white p-8 rounded-3xl text-xs">
     <p className="block uppercase tracking-wide font-bold mb-2">
-      You're all set, {name}
+      You&apos;re all set, {name}
     </p>
 
     <p>You will receive daily notifications with pleasant hand-made affirmations.</p>
