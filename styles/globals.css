@@ -21,3 +21,7 @@ a {
 .pink-drop-shadow-xl:hover {
   filter: drop-shadow(0 0 10px rgba(249, 168, 212, 0.5));
 }
+
+.white-drop-shadow-xl:hover {
+  filter: drop-shadow(0 0 10px rgba(55, 65, 81, 0.1));
+}

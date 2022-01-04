@@ -26,7 +26,7 @@ const firebaseCloudMessaging = {
     return localforage.getItem('name')
   },
 
-  init: async function (setTokenFound, setRegToken, setName) {
+  init: async function (setTokenFound, setRegToken, setName, setOnboarding) {
 
     try {
       const currentToken = await this.tokenInlocalforage();
@@ -38,6 +38,7 @@ const firebaseCloudMessaging = {
         if (currentName !== null) {
           // not first time
           setName(currentName)
+          setOnboarding(0)
         }
         return false
       }
@@ -58,7 +59,12 @@ const firebaseCloudMessaging = {
   storeName: async (name) => {
     localforage.setItem('name', name)
     console.log('name', name)
-  }
+  },
+
+  getName: async (setName) => {
+    const currentName = await localforage.getItem('name')
+    setName(currentName);
+  },
 }
 
 const onMessageListener = () =>

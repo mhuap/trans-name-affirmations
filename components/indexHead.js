@@ -28,18 +28,17 @@ export default function IndexHead() {
     <link rel='manifest' href='/manifest.json' />
     <link rel='mask-icon' href='/icons/safari-pinned-tab.svg' color='#5bbad5' />
     <link rel='shortcut icon' href='/favicon.ico' />
-    <link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Roboto:300,400,500' />
 
     <meta name='twitter:card' content='summary' />
     <meta name='twitter:url' content='https://yourdomain.com' />
-    <meta name='twitter:title' content='PWA App' />
+    <meta name='twitter:title' content='Trans Name Affirmations' />
     <meta name='twitter:description' content='Best PWA App in the world' />
     <meta name='twitter:image' content='https://yourdomain.com/icons/android-chrome-192x192.png' />
-    <meta name='twitter:creator' content='@DavidWShadow' />
+    <meta name='twitter:creator' content='@matiashuapaya' />
     <meta property='og:type' content='website' />
-    <meta property='og:title' content='PWA App' />
-    <meta property='og:description' content='Best PWA App in the world' />
-    <meta property='og:site_name' content='PWA App' />
+    <meta property='og:title' content='Trans Name Affirmations' />
+    <meta property='og:description' content='Generate trans name affirmations' />
+    <meta property='og:site_name' content='Trans Name Affirmations' />
     <meta property='og:url' content='https://yourdomain.com' />
     <meta property='og:image' content='https://yourdomain.com/icons/apple-touch-icon.png' />
   </Head>
