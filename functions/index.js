@@ -3,6 +3,7 @@ const admin = require("firebase-admin");
 const { CloudTasksClient } = require('@google-cloud/tasks');
 const express = require('express');
 const cors = require('cors');
+const axios = require('axios');
 // const path = require('path');
 
 const aff = require('./affirmations.js');
@@ -48,7 +49,11 @@ app.post('/onEnterName', async (req, res) => {
     url: req.body.url,
   }
 
+  const reg2 = req.body.registrationToken.split(":")[1];
+  const taskName = "".concat("projects/", project, "/locations/", location, "/queues/", queue, "/tasks/", reg2)
+
   const task = {
+    name: taskName,
     httpRequest: {
         httpMethod: 'POST',
         url,
@@ -66,7 +71,7 @@ app.post('/onEnterName', async (req, res) => {
     // Send create task request.
     const [ response ] = await tasksClient.createTask({ parent: queuePath, task })
     console.log(`Created task ${response.name}`);
-    res.status(200).json({message: "sending in 30s"});
+    res.status(200).json({message: "sending in 30s", taskName: response.name});
     res.end();
   } catch (error) {
     console.error(Error(error.message));
@@ -100,6 +105,9 @@ app.post('/sendNotification', async (req, res) => {
      .send(message) // set of operations
      .then((response) => {
        console.log('Successfully sent message:', response);
+       return;
+     })
+     .then(() => {
        res.status(200).json({
          sent: true,
          message: message,
@@ -115,5 +123,25 @@ app.post('/sendNotification', async (req, res) => {
      })
   })
 });
+
+app.delete("/stopNotification", async (req, res) => {
+  const taskName = "".concat("projects/", project, "/locations/", location, "/queues/", queue, "/tasks/", req.body.taskId)
+  const tasksClient = new CloudTasksClient()
+  tasksClient.deleteTask({ name: taskName })
+  .then((response) => {
+    console.log("Successfully deleted: ", response);
+    res.status(200).json({
+      deleted: true,
+    });
+    res.end();
+    resolve();
+  })
+  .catch((e) => {
+    console.error(e)
+    res.status(500).json(e)
+    res.end();
+    resolve();
+  })
+})
 
 exports.notificationHandler = functions.https.onRequest(app);

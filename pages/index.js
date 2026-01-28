@@ -7,33 +7,22 @@ import Onboarding from '../components/onboarding.js';
 const axios = require('axios');
 // import styles from '../styles/Home.module.css'
 
-const Home = () => {
-  const [name, setName] = useState('');
-  const [onboarding, setOnboarding] = useState(1);
+const Home = ({ name, setName, onboarding, setOnboarding, isTokenFound, setTokenFound, regToken, setRegToken, notification, setNotification, show, setShow}) => {
 
-  const [isTokenFound, setTokenFound] = useState(false);
-  const [regToken, setRegToken] = useState(null);
-  const [show, setShow] = useState(false);
-  const [notification, setNotification] = useState(true);
+  const swListenerCallback = event => {
+    console.log("setting notification");
+    const payload = event.data;
+    setShow(true);
+    setNotification({title: payload.notification.title, body: payload.notification.body})
+  }
 
   useEffect(() => {
-    firebaseCloudMessaging.init(setTokenFound, setRegToken, setName, setOnboarding)
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.addEventListener('message', event => {
-        console.log("setting notification");
-        const payload = event.data;
-        setShow(true);
-        setNotification({title: payload.notification.title, body: payload.notification.body})
-      });
+      navigator.serviceWorker.addEventListener('message', swListenerCallback);
+      return () => navigator.serviceWorker.removeEventListener('message', swListenerCallback);
     }
+    return;
   }, []);
-
-  useEffect(() => {
-    onMessageListener().then(payload => {
-      setShow(true);
-      setNotification({title: payload.notification.title, body: payload.notification.body})
-    }).catch(err => console.log('failed: ', err));
-  }, [name])
 
 
   const setNameOnboarding = (nameInput) => {
@@ -70,7 +59,7 @@ const Home = () => {
           handleSubmit={handleSubmit}
         />
 
-        {!onboarding && <Content show={show}/>}
+        {!onboarding && <Content show={show} {...{regToken, name}}/>}
 
         {show && <NotificationToast title={notification.title} body={notification.body}/>}
 

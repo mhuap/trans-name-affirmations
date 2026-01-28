@@ -25,3 +25,11 @@ a {
 .white-drop-shadow-xl:hover {
   filter: drop-shadow(0 0 10px rgba(55, 65, 81, 0.1));
 }
+
+.red-drop-shadow-xl:hover {
+  filter: drop-shadow(0 0 10px rgba(220, 38, 38, 0.4));
+}
+
+.sky-drop-shadow-xl:hover {
+  filter: drop-shadow(0 0 10px rgba(125, 211, 252, 0.5));
+}
